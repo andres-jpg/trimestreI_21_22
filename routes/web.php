@@ -23,9 +23,15 @@ Route::get('/', function () {
 Route::get('import', [TerremotosController::class, 'getImport']);
 
 Route::get('municipios', [MunicipiosController::class, 'getIndex'])->name('municipios');
+Route::get('municipios/edit/{municipio_id}', [MunicipiosController::class, 'getEdit'])->name('getMunicipio');
+Route::put('municipios/edit/{id}', [MunicipiosController::class, 'putEdit'])->name('putMunicipio');
+
+Route::get('localidades/{municipio_id?}', [LocalidadesController::class, 'getIndex'])->name('localidades');
+
+Route::get('terremotos', [TerremotosController::class, 'getIndex'])->name('terremotos');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
 require __DIR__.'/auth.php';

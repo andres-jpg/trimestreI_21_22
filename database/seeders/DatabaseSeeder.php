@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +25,12 @@ class DatabaseSeeder extends Seeder
         $this->call(LocalidadesTableSeeder::class);
 
         $this->call(TerremotosTableSeeder::class);
+
+        User::create([
+            'name' => 'albsierra',
+            'email' => 'alberto.sierra@murciaeduca.es',
+            'password' => bcrypt('alumno'),
+        ]);
 
         Model::reguard();
 
