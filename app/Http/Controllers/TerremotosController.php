@@ -14,6 +14,17 @@ class TerremotosController extends Controller
     {
         if(isset($localidad_id)) {
             $terremotos = Terremoto::where('localidad_id', $localidad_id)->get();
+            foreach($terremotos as $terremoto) {
+                /* Podríamos extraer la dirección en la que se ha producido el terremoto con esta API */
+                $response = Http::get("https://nominatim.openstreetmap.org/reverse?format=json&lat=" . $terremoto->Latitude . "&lon=" . $terremoto->Longitude . "&zoom=18&addressdetails=2");
+                $response = json_decode($response, true);
+                if(array_key_exists('address', $response)) {
+                    $address = $response['address'];
+                    $village = $address['village'] ?? '';
+                    $town = $address['town'] ?? '';
+                    $terremoto->localidad_id = $town;
+                }
+            }
         } else {
             $terremotos = Terremoto::all();
         }
