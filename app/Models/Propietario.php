@@ -15,4 +15,9 @@ class Propietario extends Model
         'apellidos',
 
     ];
+
+    public function construcciones()
+    {
+        return $this->hasMany(Construccion::class);
+    }
 }
