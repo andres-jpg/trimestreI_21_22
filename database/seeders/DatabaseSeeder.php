@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Propietario;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         Model::unguard();
         Schema::disableForeignKeyConstraints();
+
+        foreach(self::$propietarios as $propietario) {
+            $p = new Propietario();
+            $p->dni = $propietario['dni'];
+            $p->nombre = $propietario['nombre'];
+            $p->apellidos = $propietario['apellidos'];
+            $p->save();
+        }
 
         $this->call(MunicipiosTableSeeder::class);
 

@@ -14,7 +14,7 @@ class AddPropirtarioidToConstruccionesTable extends Migration
     public function up()
     {
         Schema::table('construcciones', function (Blueprint $table) {
-            $table->bigInteger('propietario_id');
+            $table->foreign('propietario')->references('id')->on('propietarios');
         });
     }
 
@@ -26,7 +26,7 @@ class AddPropirtarioidToConstruccionesTable extends Migration
     public function down()
     {
         Schema::table('construcciones', function (Blueprint $table) {
-            //
+            $table->dropForeign('construcciones_propietario_foreign');
         });
     }
 }

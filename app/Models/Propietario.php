@@ -18,6 +18,6 @@ class Propietario extends Model
 
     public function construcciones()
     {
-        return $this->hasMany(Construccion::class);
+        return $this->hasMany(Construccion::class, 'propietario');
     }
 }

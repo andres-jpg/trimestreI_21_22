@@ -10,8 +10,8 @@ class Construccion extends Model
     use HasFactory;
     protected $table = 'construcciones';
 
-    public function propietarios()
+    public function propietario()
     {
-        return $this->belongsTo(Propietario::class);
+        return $this->belongsTo(Propietario::class, 'propietario');
     }
 }

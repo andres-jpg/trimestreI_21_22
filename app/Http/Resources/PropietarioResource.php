@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Construccion;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PropietarioResource extends JsonResource
@@ -14,6 +15,12 @@ class PropietarioResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return array(
+            'id' => $this->id,
+            'dni' => $this->dni,
+            'nombre' => $this->nombre,
+            'apellidos' => $this->apellidos,
+            'construcciones' => ConstruccionResource::collection($this->construcciones)
+        );
     }
 }

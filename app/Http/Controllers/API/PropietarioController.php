@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PropietarioResource;
 use App\Models\Propietario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class PropietarioController extends Controller
 {
@@ -16,7 +18,7 @@ class PropietarioController extends Controller
      */
     public function index()
     {
-        return PropietarioResource::collection(Propietario::paginate());
+        return PropietarioResource::collection(Propietario::paginate(10));
     }
 
     /**
@@ -27,7 +29,18 @@ class PropietarioController extends Controller
      */
     public function store(Request $request)
     {
-        $propietario = json_decode($request->getContent(), true);
+         //Propietario::max('id')
+        $max = DB::table('propietarios')->max('id') + 1;
+
+        $response = Http::get('https://my.api.mockaroo.com/owners/' . $max . '.json?key=65658a10');
+
+        $propietarioResponse = json_decode($request->getContent(), true);
+
+        $propietario = array(
+            'dni' => $propietarioResponse['dni'],
+            'nombre' => $propietarioResponse['first_name'],
+            'apellidos' => $propietarioResponse['last_name'],
+        );
 
         $propietario = Propietario::create($propietario);
 
@@ -54,7 +67,10 @@ class PropietarioController extends Controller
      */
     public function update(Request $request, Propietario $propietario)
     {
+        $this->authorize('update', $propietario);
+
         $propietarioData = json_decode($request->getContent(), true);
+
         $propietario->update($propietarioData);
 
         return new PropietarioResource($propietario);
